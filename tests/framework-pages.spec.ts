@@ -424,3 +424,419 @@ test.describe('/frameworks/theory-of-constraints', () => {
     expect(errors, errors.join('\n')).toEqual([]);
   });
 });
+
+/* ===========================================================================
+ * S3-B — the remaining four full pages.
+ *
+ * Same walk pattern as the two above, four times: the showpiece is bound to the recipe the
+ * registry names, the prediction pays off, the explore island actually changes the model,
+ * every figure in the section sits inside a claim block, the handoff carries state, and the
+ * reduced-motion render is the finished picture rather than a frozen first frame.
+ *
+ * The amber assertion is repeated per page rather than looped once, deliberately: it is the
+ * site's most sacred rule and a per-page failure should name the page that broke it.
+ * ======================================================================== */
+
+/** Ruling 2, from the other side: these four have no constraint to name. */
+async function expectNoAmber(page: Page) {
+  await scrollThrough(page);
+  const hits = await amberAudit(page);
+  expect(
+    hits.map((h) => `${h.path}.${h.prop}`),
+    'amber on a page that has not earned it',
+  ).toEqual([]);
+  await expect(page.locator('[data-amber-surface]')).toHaveCount(0);
+}
+
+/* -------------------------------------------------------------- five forces */
+
+test.describe('/frameworks/five-forces', () => {
+  test('the assumptions move the ranking, and the delivery rate never moves', async ({ page }) => {
+    const errors = collectConsoleErrors(page);
+    await page.goto('/frameworks/five-forces');
+
+    const showpiece = page.getByTestId('showpiece');
+    await expect(showpiece).toHaveAttribute('data-showpiece', 'fw/forces-gauges');
+    await expect(page.locator('[data-recipe="fw/forces-gauges"]')).toHaveCount(1);
+    await expect(page.locator('#learn [data-pullquote]')).toHaveCount(1);
+
+    // Predict, then read the twist: the strongest force is a real finding and not the limit.
+    const prompt = page.locator('[data-component="prediction-prompt"]');
+    await prompt.scrollIntoViewIfNeeded();
+    await expect(prompt.locator('[data-reveal="true"]')).toHaveCount(0);
+    await page.getByRole('radio', { name: /Buyer power/i }).click();
+    const reveal = prompt.locator('[data-reveal="true"]');
+    await expect(reveal).toContainText(/you called it/i);
+    await expect(reveal.locator('[data-claim]').first()).toBeVisible();
+
+    // The island: flip a dated fact around and watch the pressures re-score.
+    const flip = page.getByTestId('forces-flip');
+    await flip.scrollIntoViewIfNeeded();
+    await expect(flip).toHaveAttribute('data-strongest', 'buyers');
+
+    // Supply eases; the ranking survives it, which is what a robust finding looks like.
+    await flip.locator('[data-flip="lead-times"]').click();
+    await expect(flip.locator('[data-force-row="suppliers"]')).toHaveAttribute('data-moved', 'down');
+    await expect(flip).toHaveAttribute('data-strongest', 'buyers');
+    await expect(flip.locator('[data-implication="lead-times"]')).toBeVisible();
+
+    // Buyer power eases instead, and the strongest pressure genuinely changes hands.
+    await flip.locator('[data-flip="lead-times"]').click();
+    await flip.locator('[data-flip="multi-year"]').click();
+    await expect(flip).toHaveAttribute('data-strongest', 'suppliers');
+
+    const lens = page.locator('[data-component="lens-switch"]');
+    await lens.scrollIntoViewIfNeeded();
+    await lens.getByRole('tab', { name: /ceiling on volume/i }).click();
+    await expect(lens.getByRole('tab', { name: /ceiling on volume/i })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    await expectEveryFigureSourced(page);
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('the handoff carries the example company and its state in the URL', async ({ page }) => {
+    await page.goto('/frameworks/five-forces');
+    const link = page.locator('[data-handoff-link][data-recommended="true"]').first();
+    await link.scrollIntoViewIfNeeded();
+    const href = await link.getAttribute('href');
+    expect(href).toContain('company=beacon-mechanical');
+    expect(href).toContain('from=five-forces');
+    expect(href).toContain('carries=');
+
+    await link.click();
+    await expect(page).toHaveURL(/from=five-forces/);
+    const banner = page.getByTestId('incoming-state');
+    await expect(banner).toBeVisible();
+    await expect(banner).toContainText('Five Forces');
+    await expect(banner).toContainText('Beacon Mechanical');
+  });
+
+  test('reduced motion renders every wedge at its final geometry', async ({ page }) => {
+    const errors = collectConsoleErrors(page);
+    await reduceMotion(page);
+    await page.goto('/frameworks/five-forces');
+    await expect(page.locator('[data-act="explain"]')).toHaveAttribute('data-pinned', 'false');
+
+    const gauges = page.locator('[data-recipe="fw/forces-gauges"]');
+    await expect(gauges).toBeVisible();
+    await gauges.scrollIntoViewIfNeeded();
+    // Five wedges plus the settled reading: the stage reports its terminal step immediately.
+    await expect.poll(async () => gauges.getAttribute('data-step'), { timeout: 5_000 }).toBe('5');
+    await expect(gauges.locator('[data-force]')).toHaveCount(5);
+
+    await scrollThrough(page);
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('contains no amber at all — the terrain is not the constraint', async ({ page }) => {
+    await page.goto('/frameworks/five-forces');
+    await expectNoAmber(page);
+  });
+});
+
+/* --------------------------------------------------------------------- vrio */
+
+test.describe('/frameworks/vrio', () => {
+  test('four capabilities stop at four different gates', async ({ page }) => {
+    const errors = collectConsoleErrors(page);
+    await page.goto('/frameworks/vrio');
+
+    const showpiece = page.getByTestId('showpiece');
+    await expect(showpiece).toHaveAttribute('data-showpiece', 'fw/vrio-gates');
+    await expect(page.locator('[data-recipe="fw/vrio-gates"]')).toHaveCount(1);
+    await expect(page.locator('#learn [data-pullquote]')).toHaveCount(1);
+
+    const prompt = page.locator('[data-component="prediction-prompt"]');
+    await prompt.scrollIntoViewIfNeeded();
+    await page.getByRole('radio', { name: /Single-approver project control/i }).click();
+    await expect(prompt.locator('[data-reveal="true"]')).toContainText(/you called it/i);
+
+    const walk = page.getByTestId('vrio-walk');
+    await walk.scrollIntoViewIfNeeded();
+    await expect(walk).toHaveAttribute('data-walked', '0');
+
+    // The one presented as a strength does not clear the first gate.
+    await walk.locator('[data-gate-pick="approver:v"]').click();
+    await expect(walk.locator('[data-candidate="approver"]')).toHaveAttribute(
+      'data-outcome',
+      'parity',
+    );
+    await expect(walk.locator('[data-gate="approver:v"]')).toHaveAttribute(
+      'data-gate-passed',
+      'false',
+    );
+    await expect(walk.locator('[data-gate="approver:v"] [data-claim]').first()).toBeVisible();
+    // The filter stops: the gates after the failure are never asked.
+    await expect(walk.locator('[data-gate="approver:r"]')).toHaveCount(0);
+
+    await walk.locator('[data-gate-pick="crews:none"]').click();
+    await expect(walk.locator('[data-candidate="crews"]')).toHaveAttribute(
+      'data-outcome',
+      'sustained',
+    );
+    await expect(walk.locator('[data-gate="crews:o"]')).toHaveAttribute('data-gate-passed', 'true');
+
+    await walk.locator('[data-gate-pick="estimating:o"]').click();
+    await expect(walk.locator('[data-candidate="estimating"]')).toHaveAttribute(
+      'data-outcome',
+      'uncaptured',
+    );
+    await expect(walk.locator('[data-gate="estimating:o"]')).toHaveAttribute(
+      'data-gate-passed',
+      'false',
+    );
+
+    await walk.locator('[data-gate-pick="coverage:r"]').click();
+    await expect(walk).toHaveAttribute('data-settled', 'true');
+    await expect(walk).toHaveAttribute('data-called', '4');
+
+    const lens = page.locator('[data-component="lens-switch"]');
+    await lens.scrollIntoViewIfNeeded();
+    await lens.getByRole('tab', { name: /as tested/i }).click();
+    await expect(lens.getByRole('tab', { name: /as tested/i })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    await expectEveryFigureSourced(page);
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('the handoff carries the example company and its state in the URL', async ({ page }) => {
+    await page.goto('/frameworks/vrio');
+    const link = page.locator('[data-handoff-link][data-recommended="true"]').first();
+    await link.scrollIntoViewIfNeeded();
+    const href = await link.getAttribute('href');
+    expect(href).toContain('company=beacon-mechanical');
+    expect(href).toContain('from=vrio');
+    expect(href).toContain('carries=');
+
+    await link.click();
+    await expect(page).toHaveURL(/from=vrio/);
+    const banner = page.getByTestId('incoming-state');
+    await expect(banner).toBeVisible();
+    await expect(banner).toContainText('VRIO');
+    await expect(banner).toContainText('Beacon Mechanical');
+  });
+
+  test('reduced motion renders every token already shelved or docked', async ({ page }) => {
+    const errors = collectConsoleErrors(page);
+    await reduceMotion(page);
+    await page.goto('/frameworks/vrio');
+    await expect(page.locator('[data-act="explain"]')).toHaveAttribute('data-pinned', 'false');
+
+    const gates = page.locator('[data-recipe="fw/vrio-gates"]');
+    await expect(gates).toBeVisible();
+    await gates.scrollIntoViewIfNeeded();
+    await expect
+      .poll(
+        async () =>
+          gates
+            .locator('[data-capability]')
+            .evaluateAll((els) => els.every((el) => el.getAttribute('data-shelf') !== 'lane')),
+        { timeout: 5_000 },
+      )
+      .toBe(true);
+    await expect(gates.locator('[data-shelf="sustained"]')).toHaveCount(1);
+
+    await scrollThrough(page);
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('contains no amber at all — an advantage is not a constraint', async ({ page }) => {
+    await page.goto('/frameworks/vrio');
+    await expectNoAmber(page);
+  });
+});
+
+/* ---------------------------------------------------------------- swot/tows */
+
+test.describe('/frameworks/swot-tows', () => {
+  test('collection is not generation: most pairings mint nothing', async ({ page }) => {
+    const errors = collectConsoleErrors(page);
+    await page.goto('/frameworks/swot-tows');
+
+    const showpiece = page.getByTestId('showpiece');
+    await expect(showpiece).toHaveAttribute('data-showpiece', 'fw/tows-cross');
+    await expect(page.locator('[data-recipe="fw/tows-cross"]')).toHaveCount(1);
+    await expect(page.locator('#learn [data-pullquote]')).toHaveCount(1);
+
+    const prompt = page.locator('[data-component="prediction-prompt"]');
+    await prompt.scrollIntoViewIfNeeded();
+    await page
+      .getByRole('radio', { name: /Run survey and commissioning off the service book/i })
+      .click();
+    await expect(prompt.locator('[data-reveal="true"]')).toContainText(/you called it/i);
+
+    const picker = page.getByTestId('tows-picker');
+    await picker.scrollIntoViewIfNeeded();
+    await expect(picker).toHaveAttribute('data-move', '');
+
+    // A pairing nobody crossed: both entries true, no option minted. That is the lesson.
+    await picker.locator('[data-cross-card="s1"]').click();
+    await picker.locator('[data-cross-card="t1"]').click();
+    await expect(picker).toHaveAttribute('data-move', 'none');
+    await expect(picker.locator('[data-minted]')).toHaveCount(0);
+
+    // The one crossing that gives capacity back.
+    await picker.locator('[data-cross-card="w2"]').click();
+    await picker.locator('[data-cross-card="o2"]').click();
+    await expect(picker).toHaveAttribute('data-move', 'WO');
+    await expect(picker.locator('[data-minted="WO"]')).toBeVisible();
+    await expect(picker.locator('[data-effect="releases"]')).toBeVisible();
+    await expect(picker).toHaveAttribute('data-found', '1');
+    await expect(picker.locator('[data-minted="WO"] [data-claim]').first()).toBeVisible();
+
+    const lens = page.locator('[data-component="lens-switch"]');
+    await lens.scrollIntoViewIfNeeded();
+    await lens.getByRole('tab', { name: /as typed/i }).click();
+    await expect(lens.getByRole('tab', { name: /as typed/i })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    await expectEveryFigureSourced(page);
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('the handoff carries the example company and its state in the URL', async ({ page }) => {
+    await page.goto('/frameworks/swot-tows');
+    // SWOT's own bestBefore is TOWS, whose page is S6's — so the linkable edge here is the
+    // conductor, and it is correctly not marked as the recommended next step.
+    const link = page.locator('[data-handoff-link]').first();
+    await link.scrollIntoViewIfNeeded();
+    const href = await link.getAttribute('href');
+    expect(href).toContain('company=beacon-mechanical');
+    expect(href).toContain('from=swot');
+    expect(href).toContain('carries=');
+    await expect(page.locator('[data-handoff-chapter="tows"]')).toHaveCount(1);
+
+    await link.click();
+    await expect(page).toHaveURL(/from=swot/);
+    const banner = page.getByTestId('incoming-state');
+    await expect(banner).toBeVisible();
+    await expect(banner).toContainText('SWOT');
+    await expect(banner).toContainText('Beacon Mechanical');
+  });
+
+  test('reduced motion renders every option already minted', async ({ page }) => {
+    const errors = collectConsoleErrors(page);
+    await reduceMotion(page);
+    await page.goto('/frameworks/swot-tows');
+    await expect(page.locator('[data-act="explain"]')).toHaveAttribute('data-pinned', 'false');
+
+    const cross = page.locator('[data-recipe="fw/tows-cross"]');
+    await expect(cross).toBeVisible();
+    await cross.scrollIntoViewIfNeeded();
+    // The mint zone is empty by design at rest; under reduced motion it must arrive full.
+    await expect.poll(async () => cross.getAttribute('data-minted'), { timeout: 5_000 }).toBe('4');
+    await expect(cross.locator('[data-minted="SO"]')).toHaveCount(1);
+    await expect(cross.locator('[data-minted="WT"]')).toHaveCount(1);
+
+    await scrollThrough(page);
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('contains no amber at all — the cross generates, it does not diagnose', async ({ page }) => {
+    await page.goto('/frameworks/swot-tows');
+    await expectNoAmber(page);
+  });
+});
+
+/* --------------------------------------------------------------------- raci */
+
+test.describe('/frameworks/raci', () => {
+  test('an agent can be responsible; accountable stays a named human', async ({ page }) => {
+    const errors = collectConsoleErrors(page);
+    await page.goto('/frameworks/raci');
+
+    const showpiece = page.getByTestId('showpiece');
+    await expect(showpiece).toHaveAttribute('data-showpiece', 'fw/raci-route');
+    await expect(page.locator('[data-recipe="fw/raci-route"]')).toHaveCount(1);
+    await expect(page.locator('#learn [data-pullquote]')).toHaveCount(1);
+
+    const prompt = page.locator('[data-component="prediction-prompt"]');
+    await prompt.scrollIntoViewIfNeeded();
+    await page.getByRole('radio', { name: /Re-sequencing the dispatch board/i }).click();
+    await expect(prompt.locator('[data-reveal="true"]')).toContainText(/you called it/i);
+
+    const routing = page.getByTestId('raci-routing');
+    await routing.scrollIntoViewIfNeeded();
+    await expect(routing).toHaveAttribute('data-compared', '0');
+
+    // Packet one, routed the way the pack routes it.
+    await routing.locator('[data-assign="rebook:R:scheduler"]').click();
+    await routing.locator('[data-assign="rebook:A:pm"]').click();
+    await routing.locator('[data-compare="rebook"]').click();
+    await expect(routing.locator('[data-packet="rebook"]')).toHaveAttribute('data-compared', 'true');
+    await expect(routing.locator('[data-verdict="rebook:R"]')).toHaveAttribute('data-matched', 'true');
+    await expect(routing.locator('[data-verdict="rebook:A"]')).toHaveAttribute('data-matched', 'true');
+
+    // Packet two, routed the way this framework refuses: accountability to an agent.
+    await routing.locator('[data-assign="approve:R:intake-agent"]').click();
+    await routing.locator('[data-assign="approve:A:intake-agent"]').click();
+    await routing.locator('[data-compare="approve"]').click();
+    await expect(routing.locator('[data-verdict="approve:A"]')).toHaveAttribute(
+      'data-matched',
+      'false',
+    );
+    await expect(routing.getByText(/one assignment this model refuses/i)).toBeVisible();
+    await expect(routing).toHaveAttribute('data-settled', 'true');
+
+    const lens = page.locator('[data-component="lens-switch"]');
+    await lens.scrollIntoViewIfNeeded();
+    await lens.getByRole('tab', { name: /as routed/i }).click();
+    await expect(lens.getByRole('tab', { name: /as routed/i })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    await expectEveryFigureSourced(page);
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('the handoff carries the example company and its state in the URL', async ({ page }) => {
+    await page.goto('/frameworks/raci');
+    // RACI's recommended next step is the Balanced Scorecard, a chapter page until S6, so the
+    // walkable edge is the one back into the conductor.
+    const link = page.locator('[data-handoff-link]').first();
+    await link.scrollIntoViewIfNeeded();
+    const href = await link.getAttribute('href');
+    expect(href).toContain('company=beacon-mechanical');
+    expect(href).toContain('from=raci');
+    expect(href).toContain('carries=');
+
+    await link.click();
+    await expect(page).toHaveURL(/from=raci/);
+    const banner = page.getByTestId('incoming-state');
+    await expect(banner).toBeVisible();
+    await expect(banner).toContainText('RACI');
+    await expect(banner).toContainText('Beacon Mechanical');
+  });
+
+  test('reduced motion renders the packet delivered and the signature drawn', async ({ page }) => {
+    const errors = collectConsoleErrors(page);
+    await reduceMotion(page);
+    await page.goto('/frameworks/raci');
+    await expect(page.locator('[data-act="explain"]')).toHaveAttribute('data-pinned', 'false');
+
+    const route = page.locator('[data-recipe="fw/raci-route"]');
+    await expect(route).toBeVisible();
+    await route.scrollIntoViewIfNeeded();
+    // Five nodes plus the pause: the stop is recorded in the picture rather than merely
+    // having happened, which is the whole reduced-motion contract for this recipe.
+    await expect.poll(async () => route.getAttribute('data-step'), { timeout: 5_000 }).toBe('5');
+    await expect(route.locator('[data-component="graph-node"]')).toHaveCount(5);
+
+    await scrollThrough(page);
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('contains no amber at all — the stop is a design, not a diagnosis', async ({ page }) => {
+    await page.goto('/frameworks/raci');
+    await expectNoAmber(page);
+  });
+});

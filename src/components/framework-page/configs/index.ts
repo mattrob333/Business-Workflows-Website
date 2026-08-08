@@ -1,10 +1,12 @@
 /**
  * The per-framework configs, and the two checks that keep them honest.
  *
- * S3-A ships `bmc` and `theory-of-constraints`. S3-B adds `five-forces`, `vrio`, `swot`
- * (which owns `/frameworks/swot-tows`) and `raci` by writing one file each in this
- * directory and adding it to `CONFIGS` — the route, the state panel, the handoff, the
- * locked door and the share row already work for all six.
+ * S3-A shipped `bmc` and `theory-of-constraints`; S3-B added `five-forces`, `vrio`, `swot`
+ * (which owns `/frameworks/swot-tows`) and `raci` the same way — one file each in this
+ * directory, registered in `CONFIGS` below. The route, the state panel, the handoff, the
+ * locked door and the share row already worked for all six before any of them existed.
+ * With all six present, `CONFIGURED_FRAMEWORK_IDS` and `frameworksByDepth('full')` now
+ * name the same set and no page renders the in-build scaffold.
  *
  * `assertConfigMatchesRegistry` runs during static generation, so a config that drifts from
  * its registry record — a showpiece bound to a recipe the record does not name, a lesson at
@@ -15,9 +17,20 @@
 import { byId, type Framework, type FrameworkId } from '@/registry';
 import type { FrameworkPageConfig } from '../types';
 import { bmcPageConfig } from './bmc';
+import { fiveForcesPageConfig } from './five-forces';
+import { raciPageConfig } from './raci';
+import { swotTowsPageConfig } from './swot-tows';
 import { tocPageConfig } from './theory-of-constraints';
+import { vrioPageConfig } from './vrio';
 
-const CONFIGS: readonly FrameworkPageConfig[] = [bmcPageConfig, tocPageConfig];
+const CONFIGS: readonly FrameworkPageConfig[] = [
+  bmcPageConfig,
+  fiveForcesPageConfig,
+  vrioPageConfig,
+  swotTowsPageConfig,
+  tocPageConfig,
+  raciPageConfig,
+];
 
 const BY_ID = new Map<FrameworkId, FrameworkPageConfig>(CONFIGS.map((c) => [c.id, c]));
 

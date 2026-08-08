@@ -22,11 +22,13 @@ verified. Unchecked = not done.
     same open question as S0: /frameworks perf is 79 simulated (observed paint 232ms —
     lantern artifact — but TBT ~430ms from hydrating 17 nodes + 58 edges is real).
 - [ ] S3 · The six full framework pages
-  - S3-A landed: the seven-section page pattern (registry-driven, per-framework config
-    modules), MDX lesson wiring, URL-state handoff contract, and two complete pages —
-    /frameworks/bmc and /frameworks/theory-of-constraints (the site's one amber surface,
-    pragma'd). 26/26 Playwright incl. the digit-sweep honesty walk. S3-B (five-forces,
-    vrio, swot-tows, raci) in flight.
+  - All six pages live and verified: act-pinned showpieces, predict-before-reveal labs,
+    digit-sweep honesty walks, URL-state handoffs, reduced-motion terminal states —
+    42/42 Playwright. Amber exists only on /frameworks/theory-of-constraints (three
+    pragma'd surfaces, asserted as a set); the other five are asserted amber-free.
+    a11y 96 / BP 96 / SEO 100 spot-checked. The row's own done-means all pass; the box
+    joins S0/S2 in waiting on Matt's one ruling about where the Lighthouse *perf* budget
+    is measured (container-simulated vs shipping host) — one ruling closes all three.
 - [ ] S4 · The homepage (five acts)
 - [ ] S5 · The flagship run — Find What Matters Now
 - [ ] S6 · Chapters + examples + bridge + waitlist

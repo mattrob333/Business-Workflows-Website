@@ -1,5 +1,35 @@
 # Developer log — The Strategy Stack
 
+## 2026-08-08 · Session 4 — S3-B, the other four pages; S3 functionally complete
+
+five-forces, vrio, swot-tows, raci — built mechanically against the S3-A pattern, which
+is the pattern working as designed. Four interaction islands worth knowing about:
+ForcePressureFlip re-scores the forces when a pack fact flips and an invariant claim
+panel says none of it moves the delivery rate; VrioGateWalk stops at the first failed
+gate and says the remaining gates are never asked; TowsCrossPicker mints moves from only
+four of sixteen pairings — the other twelve saying "nothing minted" IS the lesson;
+PacketRouting fires the accountability rule when a visitor routes A to an agent, and its
+second packet is deliberately human-on-both-letters (the honest answer to a queue at one
+approver is a second approver, not an agent).
+
+Decisions inherited from the pack, not invented: the retrofit crews pass all four VRIO
+gates (story.ts says so; the recipes fixture that disagrees is a stand-in, not evidence);
+single-approver control fails the VALUE gate while being perfectly organised — which is
+the gate-order argument. The WO move rests on an assumption the pack cannot settle
+(service-tech qualifications) and is labelled as the page's named open question.
+
+For later slices: the `tows` chapter record's "three of them make the backlog worse"
+doesn't match the four authored crossings (re-balance when S6 builds the TOWS chapter);
+swot-tows and raci handoff tests should tighten to [data-recommended] once S6 makes
+their bestBefore targets linkable; the claim-status rules (recommendations may cite
+nothing in the lib, but a rendered claim block must cite something in the walk) need a
+doc note before S5 authors run steps. The recipes act-pin test flaked once under
+first-full-run load — passed in isolation and on every later run; watch it.
+
+42/42 Playwright, 49/49 vitest, six exported pages, a11y 96 / BP 96 / SEO 100
+spot-checked on toc + five-forces. S3's row done-means all pass; its box waits on the
+same single perf-measurement ruling as S0/S2.
+
 ## 2026-08-08 · Session 3 — S3-A, the framework page pattern + the first two pages
 
 The pattern is a per-framework config module (`framework-page/configs/`) feeding a
