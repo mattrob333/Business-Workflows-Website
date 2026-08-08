@@ -1,0 +1,11 @@
+/* The Observatory — design tokens. THE single source of color. 01-design-system §1. */
+:root {
+  --void: #0E0E0D; --paper: #151514; --surface: #1D1D1B; --raised: #262624;
+  --line: #2F2F2C; --line-strong: #43423C;
+  --ink: #ECEBE6; --muted: #A6A49B; --faint: #73726B;
+  --constraint: #E8A845; --constraint-soft: #2C2314;
+  --evidence: #4CBD86; --evidence-soft: #17271E;
+  --flow: #8FA5E8; --flow-deep: #5F76C4;
+  --contradiction: #DE705C; --contradiction-soft: #2C1915;
+  --shadow: 0 1px 2px rgba(0,0,0,.45), 0 12px 40px rgba(0,0,0,.55);
+}

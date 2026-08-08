@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@theme inline {
+  --color-void: var(--void); --color-paper: var(--paper); --color-surface: var(--surface);
+  --color-raised: var(--raised); --color-line: var(--line); --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink); --color-muted: var(--muted); --color-faint: var(--faint);
+  --color-evidence: var(--evidence); --color-flow: var(--flow); --color-flow-deep: var(--flow-deep);
+  --color-contradiction: var(--contradiction);
+  --font-narrative: "Newsreader Variable", serif;
+  --font-system: "IBM Plex Mono", monospace;
+  --font-teaching: "Inter Variable", sans-serif;
+}
+
+html { color-scheme: dark; }
+body {
+  background: var(--void); color: var(--ink);
+  font-family: "Inter Variable", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
