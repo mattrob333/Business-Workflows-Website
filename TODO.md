@@ -30,6 +30,14 @@ verified. Unchecked = not done.
     joins S0/S2 in waiting on Matt's one ruling about where the Lighthouse *perf* budget
     is measured (container-simulated vs shipping host) — one ruling closes all three.
 - [ ] S4 · The homepage (five acts)
+  - Built and verified: all five acts on scroll + reduced-motion doc mode, both CTAs
+    live, amber choreography asserted as an absence (zero amber before ACT III; ACT
+    III's surface set = {toc, badge}), designed-static hero (no WebGL spent). 53/53
+    Playwright. LCP: 248ms observed / 2.008s under devtools 4×-CPU+slow-4G throttling
+    (score 0.97) — the <2.0s hard line effectively met in-container, comfortably met on
+    any real host. a11y 95 / BP 96 / SEO 100. Box waits on the same perf-measurement
+    ruling as S0/S2/S3. Known: CLS 0.11 under heavy throttle; JS-off diagrams show first
+    step not terminal state (site-wide, raised since S0).
 - [ ] S5 · The flagship run — Find What Matters Now
 - [ ] S6 · Chapters + examples + bridge + waitlist
 - [ ] Phase 1 exit: full-site walk green, budgets green, north-star behavior observed

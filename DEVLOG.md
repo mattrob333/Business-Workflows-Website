@@ -1,5 +1,37 @@
 # Developer log — The Strategy Stack
 
+## 2026-08-08 · Session 5 — S4, the homepage
+
+Beacon gets diagnosed while you scroll. ACT I: a nine-block portrait canvas assembles
+(not the working canvas — a portrait), key resources wearing the contradiction grade so
+the block the revenue line leans on pulses once; evidence chips land under it. ACT II:
+an authored crop of the graph — the flagship run's seven frameworks, eight real registry
+edges via edgesFor() so a rewired registry fails the build; the full 17/58 graph was
+deliberately not embedded (S2's hydration cost, one sentence to teach). ACT III: the
+page's first amber, computed from capacity, in exactly two already-pragma'd surfaces —
+no new amber-bearing file was written, and the test asserts absence everywhere else,
+then presence inside the declared set. ACT IV: the change-order packet stops at the
+accountable human. ACT V: the hand-built loop ring, waitlist, quiet footer.
+
+LCP was designed, then measured. The hero is plain server markup — no motion wrapper,
+no opacity gate — and the walk fetches the RAW exported HTML and fails on any opacity
+gating in the hero region (a rendered check would miss it; hydration has happened by
+then). Measured: observed paint 248ms (FCP = LCP); under devtools 4×-CPU + slow-4G
+throttling, 2.008s, score 0.97 — the Ruling 7 hard line effectively met inside this
+container and comfortably met on real hosting. First Load 180 kB — level with
+/frameworks despite running four recipes, because the registry and pack never cross the
+client boundary. No WebGL: the designed-static hero carries a case-file of three pack
+metrics with evidence chips — the honesty engine above the fold.
+
+Known and raised: CLS 0.11 under heavy throttle (watch it); JS-off diagrams render
+their first step, not their terminal state — site-wide since S0, needs a CSS-reachable
+terminal state in src/motion/ (S4 improved the noscript rule but useStage is React
+state); ActMarker clips ~8px at exactly 1280px viewport width (acts.tsx rail property);
+ACT II's seven node positions are a second authored layout (edges are registry-checked,
+coordinates are not shared with graph-layout).
+
+53/53 Playwright, 49/49 vitest, a11y 95 / BP 96 / SEO 100 on /.
+
 ## 2026-08-08 · Session 4 — S3-B, the other four pages; S3 functionally complete
 
 five-forces, vrio, swot-tows, raci — built mechanically against the S3-A pattern, which
