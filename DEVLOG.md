@@ -1,5 +1,43 @@
 # Developer log — The Strategy Stack
 
+## 2026-08-09 · Session 6 — S5, the flagship run
+
+*Find What Matters Now* is live at /runs/find-what-matters-now: twelve steps, Beacon
+from canvas to routed interventions in an authored 17 minutes. The mechanics worth
+recording:
+
+- **Resume is honest**: ?step=N parsed client-side, pushState + popstate (browser-back
+  walks the run backwards), and the state rail is a pure function of the step number —
+  ?step=7 shows exactly steps 1–6's writes for every visitor. The walk asserts
+  localStorage and sessionStorage stay empty.
+- **The rail is the thesis**: 22 rows over the run's stateOut fields — committed /
+  pending (empty slots with field names, so you see what the step is about to earn) /
+  landed (arrives with motion/ingest when the interaction completes). Re-written fields
+  are marked revisions, not overwrites. Grows monotonically 0→20.
+- **Amber is earned, structurally**: step 10 identifies the narrow stage in ink; step 11
+  paints it. The constraint surfaces are not in the DOM before step 11 (one step mounts
+  at a time — display:none would still leak to getComputedStyle), and step 11's set is
+  asserted {toc, badge, verdict}, all pre-pragma'd files, no new amber-bearing file.
+- **Step 9's event injection** teaches re-scoping: inject "a competitor raises capital",
+  edges into Five Forces/SWOT/TOWS light with route dots, and BMC/VRIO/ToC/RACI stay
+  dark with sourced verdicts — VRIO the deliberate near-miss (94-day hiring lead time
+  means capital doesn't move inimitability this quarter).
+
+Two decisions made by the integration lead on the agent's raised items: (1) run copy
+stays in src/content/runs/ per 02-architecture's content model — registry runs.ts keeps
+its null stubs and its test unmodified; the registry stays structural, content stays in
+content (the brief's instruction to fill the registry stubs was wrong, the agent was
+right to refuse). (2) The DOM-weight interpretation stands: the server emits all twelve
+steps' editorial content but only the current step's diagram, halving the DOM; the
+instruments render in final state on /frameworks, which the page says with JS off.
+
+To confirm with Matt: step answers reset on revisit (the rail, not the widgets, is the
+run's memory — deliberate, but a product call). Numbers: 90/90 Playwright, 195 kB first
+load (no new bundle weight vs S3 pages), a11y 100 / BP 96 / SEO 100, observed paint
+763ms, exported HTML 79.5 kB gzipped. Simulated TBT ~2.0s is the site's worst — the
+first perf target once the measurement ruling lands. GraphMiniMap label clipping near
+canvas edges suppressed locally in RunShell; S2 owes a real fix.
+
 ## 2026-08-08 · Session 5 — S4, the homepage
 
 Beacon gets diagnosed while you scroll. ACT I: a nine-block portrait canvas assembles

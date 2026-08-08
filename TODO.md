@@ -39,5 +39,16 @@ verified. Unchecked = not done.
     ruling as S0/S2/S3. Known: CLS 0.11 under heavy throttle; JS-off diagrams show first
     step not terminal state (site-wide, raised since S0).
 - [ ] S5 · The flagship run — Find What Matters Now
+  - Built and verified: 12 steps each with a working interaction (37-test walk), URL
+    resume via ?step=N with the rail a pure function of the step number (zero storage),
+    SIMULATION chip pinned throughout, the rail accreting 0→20 fields with revisions
+    marked, step-9 event injection lighting re-run edges with sourced stay-dark verdicts,
+    amber structurally absent before step 11 (surfaces not in the DOM) and asserted as
+    the set {toc, badge, verdict} at 11. 90/90 Playwright. a11y 100 / BP 96 / SEO 100,
+    observed paint 763ms. Box waits on the perf ruling with S0-S4; note: this route's
+    simulated TBT (~2.0s) is the site's worst — first perf target after the ruling.
+    Product decision to confirm: step answers reset on revisit (the rail, not the
+    widgets, is the run's memory). Run copy lives in src/content/runs/ per
+    02-architecture; registry runs.ts left untouched (its test asserts null stubs).
 - [ ] S6 · Chapters + examples + bridge + waitlist
 - [ ] Phase 1 exit: full-site walk green, budgets green, north-star behavior observed
