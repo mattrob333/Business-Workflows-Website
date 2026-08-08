@@ -15,6 +15,12 @@ verified. Unchecked = not done.
     progressive-hydration pass on the gallery. All other S0 done-means are green.
 - [x] S1 · Registry + content core (17 records, 3 companies + evidence packs, honesty lib)
 - [ ] S2 · The Framework Graph
+  - Built and verified: 16/16 Playwright (10 S2 walks incl. keyboard traversal,
+    registry-count nodes, edge panels naming real state fields, reduced-motion, no-amber,
+    rendered-SVG clearance ≥6 units), a11y 100 on /graph and 96 on /frameworks after the
+    integration lead's contrast/heading/label fixes. Box ticks when Matt rules on the
+    same open question as S0: /frameworks perf is 79 simulated (observed paint 232ms —
+    lantern artifact — but TBT ~430ms from hydrating 17 nodes + 58 edges is real).
 - [ ] S3 · The six full framework pages
 - [ ] S4 · The homepage (five acts)
 - [ ] S5 · The flagship run — Find What Matters Now

@@ -2,7 +2,9 @@
 :root {
   --void: #0E0E0D; --paper: #151514; --surface: #1D1D1B; --raised: #262624;
   --line: #2F2F2C; --line-strong: #43423C;
-  --ink: #ECEBE6; --muted: #A6A49B; --faint: #73726B;
+  /* --faint passes 4.5:1 small-text contrast on void/paper/glass (WCAG AA; was #73726B
+     at 3.99 on void). Still the quietest voice — muted sits near 7:1. */
+  --ink: #ECEBE6; --muted: #A6A49B; --faint: #82817A;
   --constraint: #E8A845; --constraint-soft: #2C2314;
   --evidence: #4CBD86; --evidence-soft: #17271E;
   --flow: #8FA5E8; --flow-deep: #5F76C4;

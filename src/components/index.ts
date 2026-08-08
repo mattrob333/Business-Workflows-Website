@@ -32,3 +32,15 @@ export {
 } from './StatusChip';
 export { WaitlistBar, type WaitlistBarProps, type WaitlistState } from './WaitlistBar';
 export { FOCUS_RING, MONO_LABEL } from './styles';
+
+/**
+ * The S2 graph surfaces are deliberately **not** re-exported here. Each one pulls the
+ * whole registry and the layout module in behind it, and this barrel has no
+ * `sideEffects: false` to tree-shake against — routing them through it put the registry
+ * into every page that imports a `Kicker`. Import them by path:
+ *
+ *   `@/components/FrameworkGraph`  · the interactive canvas
+ *   `@/components/GraphMiniMap`    · the non-interactive locator (S3's framework pages)
+ *   `@/components/GraphLegend`     · how to read the canvas
+ *   `@/components/GraphInspector`  · canvas + edge-inspection rail (/graph)
+ */

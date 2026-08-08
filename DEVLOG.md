@@ -1,5 +1,34 @@
 # Developer log — The Strategy Stack
 
+## 2026-08-08 · Session 2 — S2, the Framework Graph
+
+One agent, one slice. The graph is authored, not simulated (02-architecture): hand-placed
+coordinates in `graph-layout.ts` — two horizontal bands (outward analysis across the top:
+terrain → advantage → direction; inward across the bottom: customer → alignment) with the
+`bmc → theory-of-constraints → raci` spine dead level between them at y=410. The
+conductor's 13 in-edges bundle through two "throats" and rest at higher opacity than the
+other 45 — the pivot is what the eye finds first, and the emphasis is opacity only, never
+hue. No amber on the page (the graph has no constraint surface); a test asserts zero.
+Edge arcs use a deterministic clearance search over authored candidates; worst rendered
+clearance across all 58 edges is asserted in Playwright (>6 user units), so coordinate
+drift fails the build. Edges are not tab stops — 17 node links + a skip link; the 58
+handoffs are keyboard/AT-reachable through `/graph`'s edge-index rail and the list below
+the graph. New: `FrameworkGraph`, `GraphMiniMap` (S3 drops it onto framework pages),
+`GraphLegend`, `GraphInspector`, `/graph` route; `/frameworks` rebuilt from S1's minimal
+index into the full-bleed experience with the list as the screen-reader-first path.
+
+Integration pass (lead): axe fixes — `--faint` lifted #73726B → #82817A (was 3.99:1 on
+void, small mono text needs 4.5:1; muted still ~7:1 so the voice hierarchy holds), node
+labels moved outside the SVG links (AT concatenates multi-line `<text>` without spaces,
+failing visible-text ⊆ accessible-name on every two-line name), inspector heading
+hierarchy made sequential. Result: a11y 100 on /graph, 96 elsewhere — Ruling 7's ≥95
+holds on every route. Remaining sub-95 items are contrast on `opacity-70`-dimmed faint
+labels; noted for the design system, not chased. Perf on /frameworks: 79 simulated —
+same lantern artifact as session 1 (observed paint 232ms), same real TBT question
+(~430ms hydrating 17 nodes + 58 edges), same pending ruling.
+
+16/16 Playwright, 49/49 vitest, tsc and tokens clean, static export green.
+
 ## 2026-08-08 · Session 1 — S0 + S1 land
 
 Two agents built in parallel with file-exclusive ownership; the integration lead verified,
