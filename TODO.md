@@ -22,6 +22,11 @@ verified. Unchecked = not done.
     same open question as S0: /frameworks perf is 79 simulated (observed paint 232ms —
     lantern artifact — but TBT ~430ms from hydrating 17 nodes + 58 edges is real).
 - [ ] S3 · The six full framework pages
+  - S3-A landed: the seven-section page pattern (registry-driven, per-framework config
+    modules), MDX lesson wiring, URL-state handoff contract, and two complete pages —
+    /frameworks/bmc and /frameworks/theory-of-constraints (the site's one amber surface,
+    pragma'd). 26/26 Playwright incl. the digit-sweep honesty walk. S3-B (five-forces,
+    vrio, swot-tows, raci) in flight.
 - [ ] S4 · The homepage (five acts)
 - [ ] S5 · The flagship run — Find What Matters Now
 - [ ] S6 · Chapters + examples + bridge + waitlist

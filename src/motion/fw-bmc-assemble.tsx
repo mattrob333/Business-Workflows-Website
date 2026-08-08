@@ -241,22 +241,28 @@ export function BmcAssemble({ blocks, company, className = '' }: BmcAssembleProp
             className="pointer-events-none absolute inset-0 h-full w-full"
           >
             <defs>
+              {/*
+                animate stays mounted in both states: unmounting it (spreading the prop
+                away) makes Framer write `undefined` into x1/x2 when a backward scrub
+                flips `settled` off, and Chromium logs an SVG length error.
+              */}
               <motion.linearGradient
                 id={sweepId}
                 x1="0"
                 y1="0"
                 x2="0.35"
                 y2="0"
-                {...(settled && !reduced
-                  ? {
-                      animate: { x1: [-0.4, 1.1], x2: [0, 1.5] },
-                      transition: {
-                        duration: DUR.sweep,
-                        ease: 'linear' as const,
-                        repeat: Infinity,
-                      },
-                    }
-                  : {})}
+                initial={{ x1: 0, x2: 0.35 }}
+                animate={
+                  settled && !reduced
+                    ? { x1: [-0.4, 1.1], x2: [0, 1.5] }
+                    : { x1: 0, x2: 0.35 }
+                }
+                transition={
+                  settled && !reduced
+                    ? { duration: DUR.sweep, ease: 'linear' as const, repeat: Infinity }
+                    : { duration: 0 }
+                }
               >
                 <stop offset="0%" stopColor="var(--flow-deep)" />
                 <stop offset="50%" stopColor="var(--flow)" />

@@ -1,5 +1,40 @@
 # Developer log — The Strategy Stack
 
+## 2026-08-08 · Session 3 — S3-A, the framework page pattern + the first two pages
+
+The pattern is a per-framework config module (`framework-page/configs/`) feeding a
+registry-checked template: `assertConfigMatchesRegistry` fails the build if a config's
+recipe or lesson path drifts from the record. Two conventions the reference configs
+establish: figures come from the company packs through accessors that throw (never
+literals), and interaction islands are dumb — they receive server-rendered claim nodes
+and decide visibility only, which keeps the registry and evidence off the client
+(3.73 kB page, 181 kB first load, down from a 208 kB first draft).
+
+Two pages shipped complete. `/frameworks/bmc`: BmcAssemble act-pinned on Beacon,
+stale-propagation explorer, predict-before-reveal. `/frameworks/theory-of-constraints`:
+the site's first amber — exactly three constraint surfaces (recipe stage, badge, verdict),
+asserted as a set with a non-vacuous guard; the narrowing interaction eliminates four true
+findings (each rebutted by the pack's own claim) before the verdict unlocks. Ruling 4 is
+mechanised in the walk: any digit outside a `[data-claim]` block in the explore body fails
+the test — which is why the islands spell UI counts as words. ToC's three modelled stage
+capacities are labelled `assumption` and printed with their basis (flagged for Matt's
+read: it is the one place numbers were authored rather than lifted).
+
+The handoff contract: `?company=<company-id>&from=<framework-id>&carries=<field,...>`;
+`IncomingState` drops anything that isn't a real registry edge or a field that doesn't
+travel it. Chapter handoff targets are named, not linked, until S6 builds those pages.
+The four unconfigured full pages render honestly (hero, signature, locked door, "being
+authored" placeholder) so nothing 404s while S3-B is in flight.
+
+Integration pass: fixed S3-A's raised defect at source — `fw-bmc-assemble`'s sweep
+gradient lost its `animate` prop on backward scrub and Framer wrote `undefined` into
+x1/x2 (console error on every page that scrubs a BMC act). Keeping `animate` mounted
+wasn't enough; the durable fix is an explicit `initial={{x1, x2}}`. The test exemption
+S3-A carried (`KNOWN_BMC_SWEEP_DEFECT`) is deleted — every walk now asserts a fully
+clean console. `src/mdx-components.tsx` exists now (App Router MDX requires it) and owns
+lesson typography; S5/S6 inherit it. 26/26 Playwright, 49/49 vitest, exports exactly six
+framework routes.
+
 ## 2026-08-08 · Session 2 — S2, the Framework Graph
 
 One agent, one slice. The graph is authored, not simulated (02-architecture): hand-placed
