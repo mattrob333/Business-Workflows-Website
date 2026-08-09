@@ -7,9 +7,13 @@
  * The lead visual is `motion/route` — the recipe whose meaning is *work moves elsewhere*
  * (01 §4) — pointed at the registry's recommended next framework. Underneath it, every
  * outgoing edge is a card that names the fields it carries and links with the example
- * company's state in the URL (`handoff.ts` documents the contract). Chapter targets are
- * listed and not linked; their pages arrive in S6, and a handoff into a 404 would be a
- * worse lie than a missing link.
+ * company's state in the URL (`handoff.ts` documents the contract).
+ *
+ * **S6 unlocked the chapter edges.** Chapter targets used to be listed without a link,
+ * because a handoff into a 404 would have been a worse lie than a missing link. All
+ * seventeen pages are now in the export, so every card is a link and the `bestBefore`
+ * recommendation is finally the thing the visitor can click. The unlinked branch is kept
+ * for a target `handoff.ts` marks unwalkable — it renders nothing today.
  */
 
 import { GlassPanel, MONO_LABEL } from '@/components';
@@ -93,7 +97,11 @@ export function HandoffSection({ framework, company, targets, unlocked }: Handof
                   {target.framework.name}
                 </span>
                 <span className={`${MONO_LABEL} text-[9px]`} style={{ color: 'var(--faint)' }}>
-                  {target.recommended ? 'run this next' : target.linkable ? 'also reads this' : 'chapter · opens in S6'}
+                  {target.recommended
+                    ? 'run this next'
+                    : target.linkable
+                      ? 'also reads this'
+                      : 'not yet published'}
                 </span>
               </div>
               <p className="mt-2 text-[14px] leading-[1.55]" style={{ color: 'var(--muted)' }}>

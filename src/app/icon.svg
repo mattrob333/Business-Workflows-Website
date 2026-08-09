@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!--
+    The favicon: one framework node, ink on void (01-design-system §1).
+    The graph draws every framework as a hexagon; the site's mark is one of them, with the
+    periwinkle flow dot at its centre that means "active" everywhere else on the site.
+    Two tokens, no wordmark — at sixteen pixels a wordmark is a smudge.
+  -->
+  <rect width="32" height="32" rx="6" fill="#0E0E0D"/>
+  <path d="M16 5.5 25 10.75 25 21.25 16 26.5 7 21.25 7 10.75Z"
+        fill="none" stroke="#ECEBE6" stroke-width="1.75" stroke-linejoin="round"/>
+  <circle cx="16" cy="16" r="3" fill="#8FA5E8"/>
+</svg>

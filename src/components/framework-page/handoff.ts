@@ -17,8 +17,12 @@
  * and the graph speak; `carries` is a comma-separated list of `StateField`s. All three are
  * optional and every reader must treat them as hostile — see `IncomingState`.
  *
- * Chapter-depth targets are named but not linked. Their pages are S6's, and a handoff into
- * a 404 would break the one promise this section exists to make.
+ * **S6 unlocked the chapter edges.** Until the eleven chapter pages existed, chapter-depth
+ * targets were named and not linked — a handoff into a 404 would have broken the one
+ * promise this section exists to make. `/frameworks/[slug]` now serves all seventeen, so
+ * every edge in the graph is walkable and `linkable` is true for all of them. The flag
+ * stays in the type rather than being deleted: it is the switch that keeps this module
+ * honest the next time a route exists in the registry before it exists in the export.
  */
 
 import { byId, edgesFor, stateField, type Framework, type FrameworkId, type StateField } from '@/registry';
@@ -30,7 +34,7 @@ export interface HandoffTarget {
   readonly fields: StateField[];
   /** `bestBefore` targets are the registry's recommended next step. */
   readonly recommended: boolean;
-  /** Full-depth pages exist in v1; chapter pages land in S6. */
+  /** Whether the target's page is in the export. Every framework's is, since S6. */
   readonly linkable: boolean;
   readonly href: string | null;
 }
@@ -78,7 +82,8 @@ export function handoffTargets(framework: Framework, company: CompanyId): Handof
 
   return ordered.map((edge) => {
     const target = byId(edge.to);
-    const linkable = target.depth === 'full';
+    // Every registry record has a page since S6 — six at full depth, eleven as chapters.
+    const linkable = true;
     return {
       framework: target,
       fields: edge.fields,

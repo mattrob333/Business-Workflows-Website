@@ -13,25 +13,34 @@ import {
   handoffTargets,
   incomingSources,
 } from '@/components/framework-page';
+import { ChapterPage } from '@/components/framework-page/ChapterPage';
 import {
   assertConfigMatchesRegistry,
   frameworkPageConfig,
 } from '@/components/framework-page/configs';
 import { COMPANIES, companyBySlug } from '@/content/companies';
+import { chapterContent } from '@/content/frameworks/chapters';
 import { AtmoMeshDrift } from '@/motion/atmo-mesh-drift';
 import { Grain } from '@/motion/grain';
-import { GROUPS, bySlug, frameworksByDepth } from '@/registry';
+import { openGraphFor } from '@/lib/site';
+import { FRAMEWORKS, GROUPS, bySlug } from '@/registry';
 
 /**
- * `/frameworks/[slug]` — the six full framework pages (04-phases S3).
+ * `/frameworks/[slug]` — all seventeen framework pages (S3 built six, S6 added eleven).
  *
  * ## What this route is
  *
- * One page pattern, six frameworks, zero per-page routing. `generateStaticParams` walks the
- * registry for `depth: 'full'` records only, so the static export emits exactly six pages
- * and the eleven chapter slugs 404 until S6 builds them. Delete a record and its page
- * disappears; promote a chapter to full and its page appears — neither requires touching
- * this file.
+ * One route, two templates, zero per-page routing. `generateStaticParams` walks the whole
+ * registry, and `depth` picks the template: `full` renders the seven-section showpiece
+ * documented below, `chapter` renders `ChapterPage` — a different, smaller pattern
+ * (03-content-spec: hero question, position-in-graph mini-map, static motion-concept
+ * teaser, ~400-word summary, notify-me). Delete a record and its page disappears; promote
+ * a chapter and it changes template — neither requires touching this file, only writing the
+ * config the promoted framework now needs.
+ *
+ * The split is by depth rather than by slug on purpose. It is the same reason the registry
+ * exists (Ruling 5): the seventeen are data, and *which kind of page a framework gets* is a
+ * property of the record, not a routing table somebody has to remember to update.
  *
  * ## The seven sections (03-content-spec, v1-scoped by Ruling 3)
  *
@@ -79,7 +88,7 @@ import { GROUPS, bySlug, frameworksByDepth } from '@/registry';
  */
 
 export function generateStaticParams(): { slug: string }[] {
-  return frameworksByDepth('full').map((framework) => ({ slug: framework.slug }));
+  return FRAMEWORKS.map((framework) => ({ slug: framework.slug }));
 }
 
 export async function generateMetadata({
@@ -90,10 +99,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const framework = bySlug(slug);
   if (!framework) return { title: 'Not found — The Strategy Stack' };
-  return {
-    title: `${framework.name} — The Strategy Stack`,
-    description: framework.coreQuestion,
-  };
+  const title = `${framework.name} — The Strategy Stack`;
+  // The description is the record's own core question, at both depths: it is the one
+  // sentence the page exists to answer, and it is already written for a reader.
+  const description = framework.coreQuestion;
+  return { title, description, ...openGraphFor(title, description) };
 }
 
 const FOOTER_LINE =
@@ -113,20 +123,40 @@ export default async function FrameworkPage({
 }) {
   const { slug } = await params;
   const framework = bySlug(slug);
-  if (!framework || framework.depth !== 'full') notFound();
+  if (!framework) notFound();
 
   const primary = framework.example.find((e) => e.role === 'primary');
   if (!primary) throw new Error(`${framework.id}: no primary example binding`);
   const company = companyBySlug(primary.company);
   if (!company) throw new Error(`${framework.id}: unknown example company "${primary.company}"`);
 
+  const targets = handoffTargets(framework, company.id);
+  const sources = incomingSources(framework);
+  const companies = COMPANIES.map((c) => ({ id: c.id, name: c.name }));
+
+  // Chapter depth is a different page, not a thinner one — see `ChapterPage`. The branch
+  // is here rather than in a second route so that `generateStaticParams` stays the single
+  // statement "every record in the registry gets a page".
+  if (framework.depth === 'chapter') {
+    const content = chapterContent(framework.id);
+    if (!content) throw new Error(`${framework.id}: chapter depth with no summary content`);
+    return (
+      <ChapterPage
+        framework={framework}
+        content={content}
+        company={company}
+        exampleNote={primary.note}
+        targets={targets}
+        sources={sources}
+        companies={companies}
+      />
+    );
+  }
+
   const config = frameworkPageConfig(framework.id);
   if (config) assertConfigMatchesRegistry(config);
 
   const group = GROUPS.find((g) => g.id === framework.group);
-  const targets = handoffTargets(framework, company.id);
-  const sources = incomingSources(framework);
-  const companies = COMPANIES.map((c) => ({ id: c.id, name: c.name }));
 
   return (
     <main

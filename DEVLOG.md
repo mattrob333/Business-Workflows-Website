@@ -1,5 +1,40 @@
 # Developer log — The Strategy Stack
 
+## 2026-08-09 · Session 7 — S6, the site is whole
+
+The final v1 slice. Eleven chapter pages on a deliberately smaller template (hero
+question, mini-map position, static teaser frame naming the recipe the full page will
+someday get, ~400-word summary, notify-me) — ChapterContent, not FrameworkPageConfig,
+selected by depth; chapters.ts self-validates at module load. Three example-company
+pages render the packs as inspectable evidence lists (source, date, type, excerpt,
+reliability) with ≥20 sourced figures each asserted; the index names Hearth & Pine,
+Northstar Clinics and Atlas Industrial as "in the lab" — names only, no invented data.
+/about-instinct quotes only lines already in the LAW (no invented essay text) and puts
+the waitlist front and center. The waitlist POSTs to NEXT_PUBLIC_WAITLIST_ENDPOINT when
+configured and keeps its honest unconfigured state otherwise — no third state that looks
+like success. Chapter handoffs unlocked site-wide (S3's "named, not linked" targets are
+real links now; its two tests tightened to [data-recommended] exactly as their comments
+invited). GraphMiniMap's edge-label clipping got its real fix (S2 API untouched).
+Favicon (ink-on-void hexagon), per-route metadata, one authored OG card whose palette is
+read out of tokens.css at build so it cannot drift; opengraph-image.tsx measured and
+rejected (extensionless octet-stream export + forced localhost metadataBase).
+
+The capstone crawl: route list read from out/ (never a literal), every route walked —
+one h1, title+description, every internal link resolves, no console/page/request
+errors, amber-law both halves site-wide (amber only on /, /recipes, the ToC page and
+the run, all inside declared surfaces, with a vacuity check), reduced-motion over all
+27 routes. Integration lead closed S6's one raised defect: the run page's missing h1 —
+RunShell's title is now the document h1 styled as chrome, and the crawl's exemption set
+is empty. 129/129 Playwright.
+
+**Phase 1 exit state**: full-site walk green; handoff continuation and run completion
+tested end to end; a11y ≥95 on every audited route. Two items stand between here and
+exit: (1) Matt sets the waitlist endpoint at ship — the LAW deferred that decision;
+(2) the perf-measurement ruling (container simulation vs shipping host) that closes
+every slice's box — observed paints are 232–763ms site-wide; the honest cost is
+hydration TBT, worst on the run route, which is the first optimization target either
+way. 27 routes, 696 kB gzip total, shared JS 103 kB.
+
 ## 2026-08-09 · Session 6 — S5, the flagship run
 
 *Find What Matters Now* is live at /runs/find-what-matters-now: twelve steps, Beacon

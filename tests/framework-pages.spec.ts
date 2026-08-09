@@ -27,7 +27,10 @@ const CHAPTER = FRAMEWORKS.filter((f) => f.depth === 'chapter');
 /** `--constraint` is #E8A845. Computed styles report it as this triplet. */
 const AMBER = '232, 168, 69';
 
-/** Chromium probes `/favicon.ico` on its own; the static export has none until S6. */
+/**
+ * Chromium probes `/favicon.ico` on its own. S6 ships one, so this mask is now belt and
+ * braces for this spec; `tests/crawl` runs without it and treats any 404 as a failure.
+ */
 const IGNORED_ERROR =
   /favicon\.ico|Failed to load resource: the server responded with a status of 404/;
 
@@ -144,9 +147,7 @@ async function amberAudit(page: Page) {
 /* ------------------------------------------------------------------- routes */
 
 test.describe('the route is the registry', () => {
-  test('exactly the full-depth frameworks are exported, and chapters are not', async ({
-    request,
-  }) => {
+  test('every framework is exported, at the depth its record declares', async ({ request }) => {
     expect(FULL_SLUGS, 'v1 ships six full frameworks (00-LAW Ruling 3)').toHaveLength(6);
 
     for (const slug of FULL_SLUGS) {
@@ -154,12 +155,18 @@ test.describe('the route is the registry', () => {
       expect(response.status(), `/frameworks/${slug} should be exported`).toBe(200);
     }
 
-    // Chapter pages are S6's. Until then the export must not emit them at all — a stub
-    // would be a promise the site cannot keep.
-    const chapter = CHAPTER[0];
-    expect(chapter, 'the registry no longer has any chapter frameworks').toBeTruthy();
-    const missing = await request.get(`/frameworks/${chapter?.slug}`);
-    expect(missing.status(), `/frameworks/${chapter?.slug} should not exist yet`).toBe(404);
+    // S6 built the chapter pages, so the eleven slugs that used to 404 now resolve. The
+    // assertion inverts rather than disappears: the route must serve *every* record, and
+    // a chapter must arrive as a chapter rather than as a thin copy of a full page.
+    expect(CHAPTER, 'the registry should still have eleven chapter frameworks').toHaveLength(11);
+    for (const framework of CHAPTER) {
+      const response = await request.get(`/frameworks/${framework.slug}`);
+      expect(response.status(), `/frameworks/${framework.slug} should be exported`).toBe(200);
+      expect(
+        await response.text(),
+        `/frameworks/${framework.slug} should render the chapter template`,
+      ).toContain('data-depth="chapter"');
+    }
   });
 
   test('every full page renders its registry signature and its share row', async ({ page }) => {
@@ -704,15 +711,17 @@ test.describe('/frameworks/swot-tows', () => {
 
   test('the handoff carries the example company and its state in the URL', async ({ page }) => {
     await page.goto('/frameworks/swot-tows');
-    // SWOT's own bestBefore is TOWS, whose page is S6's — so the linkable edge here is the
-    // conductor, and it is correctly not marked as the recommended next step.
-    const link = page.locator('[data-handoff-link]').first();
+    // Tightened now that S6 has landed: SWOT's own bestBefore is TOWS, and TOWS has a page,
+    // so the recommended next step is finally the one the registry actually recommends.
+    const link = page.locator('[data-handoff-link][data-recommended="true"]').first();
     await link.scrollIntoViewIfNeeded();
     const href = await link.getAttribute('href');
+    expect(href).toContain('/frameworks/tows');
     expect(href).toContain('company=beacon-mechanical');
     expect(href).toContain('from=swot');
     expect(href).toContain('carries=');
-    await expect(page.locator('[data-handoff-chapter="tows"]')).toHaveCount(1);
+    // Nothing on this page is a named-but-unwalkable target any more.
+    await expect(page.locator('[data-handoff-chapter]')).toHaveCount(0);
 
     await link.click();
     await expect(page).toHaveURL(/from=swot/);
@@ -800,11 +809,12 @@ test.describe('/frameworks/raci', () => {
 
   test('the handoff carries the example company and its state in the URL', async ({ page }) => {
     await page.goto('/frameworks/raci');
-    // RACI's recommended next step is the Balanced Scorecard, a chapter page until S6, so the
-    // walkable edge is the one back into the conductor.
-    const link = page.locator('[data-handoff-link]').first();
+    // Tightened now that S6 has landed: RACI's recommended next step is the Balanced
+    // Scorecard, which was a chapter without a page until this slice and now has one.
+    const link = page.locator('[data-handoff-link][data-recommended="true"]').first();
     await link.scrollIntoViewIfNeeded();
     const href = await link.getAttribute('href');
+    expect(href).toContain('/frameworks/balanced-scorecard');
     expect(href).toContain('company=beacon-mechanical');
     expect(href).toContain('from=raci');
     expect(href).toContain('carries=');

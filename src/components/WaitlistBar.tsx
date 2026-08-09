@@ -10,6 +10,25 @@
  * A form that silently swallows an address is exactly the kind of small lie Ruling 4
  * exists to prevent.
  *
+ * ## S6 — how the endpoint is wired
+ *
+ * The site is a static export with no backend of its own (02-architecture), so "decided at
+ * ship" resolves to *decided by configuration*: set
+ *
+ * ```sh
+ * NEXT_PUBLIC_WAITLIST_ENDPOINT=https://…   # anything that accepts POST application/json
+ * ```
+ *
+ * before `npm run build` and every bar on the site posts `{ email, source }` to it and
+ * reports what actually happened — `done` on a 2xx, `error` on anything else or on a
+ * network failure. Leave it unset (as this build does) and nothing changes: the bar keeps
+ * its honest unconfigured state, the field stays disabled, and no address is collected.
+ * There is deliberately no third state that looks like success — a fake receipt is the
+ * exact lie Ruling 4 forbids, and it would be the first thing a visitor tested.
+ *
+ * The value is read through `process.env` at module scope so Next inlines it at build
+ * time; there is no runtime configuration on a static host to read it from.
+ *
  * Copy law (Ruling 6): never "buy more framework reports" — always *"You ran the
  * framework once. Instinct keeps it running."*
  */
@@ -17,12 +36,28 @@
 import { useId, useState, type FormEvent } from 'react';
 import { FOCUS_RING, MONO_LABEL } from './styles';
 
+/** Inlined at build time. Unset in this build — see the note above. */
+const ENDPOINT = process.env.NEXT_PUBLIC_WAITLIST_ENDPOINT;
+
+async function postToEndpoint(endpoint: string, email: string): Promise<void> {
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      email,
+      source: typeof window === 'undefined' ? '' : window.location.pathname,
+    }),
+  });
+  if (!response.ok) throw new Error(`waitlist endpoint returned ${response.status}`);
+}
+
 export type WaitlistState = 'idle' | 'sending' | 'done' | 'error' | 'unconfigured';
 
 export interface WaitlistBarProps {
   /**
    * Where the address goes. A string is used as a form `action` (POST); a function is
-   * awaited. Omit it and the bar renders its honest disabled state.
+   * awaited. Omit it and the bar falls back to `NEXT_PUBLIC_WAITLIST_ENDPOINT`, and then —
+   * if that is unset too — to its honest disabled state.
    */
   action?: string | ((email: string) => Promise<void>);
   headline?: string;
@@ -38,17 +73,24 @@ export function WaitlistBar({
   cta = 'Request access',
   className = '',
 }: WaitlistBarProps) {
-  const configured = action !== undefined;
+  /**
+   * An explicit prop wins; otherwise the build-time endpoint, posted as JSON. A caller
+   * that passes nothing on a build with no endpoint gets `undefined`, which is what keeps
+   * the unconfigured state the default rather than an edge case.
+   */
+  const resolved: WaitlistBarProps['action'] =
+    action ?? (ENDPOINT ? (email: string) => postToEndpoint(ENDPOINT, email) : undefined);
+  const configured = resolved !== undefined;
   const [state, setState] = useState<WaitlistState>(configured ? 'idle' : 'unconfigured');
   const [email, setEmail] = useState('');
   const fieldId = useId();
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
-    if (typeof action !== 'function') return; // string action = native POST
+    if (typeof resolved !== 'function') return; // string action = native POST
     e.preventDefault();
     setState('sending');
     try {
-      await action(email);
+      await resolved(email);
       setState('done');
     } catch {
       setState('error');
@@ -91,7 +133,7 @@ export function WaitlistBar({
 
       <form
         className="mt-5 flex flex-col gap-2 sm:flex-row"
-        {...(typeof action === 'string' ? { action, method: 'post' } : {})}
+        {...(typeof resolved === 'string' ? { action: resolved, method: 'post' } : {})}
         onSubmit={submit}
       >
         <label htmlFor={fieldId} className="sr-only">

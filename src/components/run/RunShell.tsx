@@ -199,9 +199,13 @@ export function RunShell({
                   <div className={`${MONO_LABEL} text-[9px]`} style={{ color: 'var(--faint)' }}>
                     strategy run · {companyName.toLowerCase()}
                   </div>
-                  <div className="truncate text-[13px]" style={{ color: 'var(--ink)' }}>
+                  {/* The document's one h1: the run header is the page's identity
+                      (each step's title is an h2 under it). Styled as chrome, ranked
+                      as the heading — Ruling 7's accessibility bar wants a top-level
+                      heading on every document. */}
+                  <h1 className="truncate text-[13px] font-normal" style={{ color: 'var(--ink)' }}>
                     {runTitle}
-                  </div>
+                  </h1>
                 </div>
 
                 <div className="ml-auto flex flex-wrap items-center gap-x-4 gap-y-2">

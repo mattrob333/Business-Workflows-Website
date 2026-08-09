@@ -51,4 +51,19 @@ verified. Unchecked = not done.
     widgets, is the run's memory). Run copy lives in src/content/runs/ per
     02-architecture; registry runs.ts left untouched (its test asserts null stubs).
 - [ ] S6 · Chapters + examples + bridge + waitlist
+  - Built and verified: all 17 framework routes (11 chapters on their own lighter
+    template, six full pages byte-identical), 3 example pages with inspectable evidence
+    packs, /about-instinct bridge (quoted essay lines only), waitlist wired to
+    NEXT_PUBLIC_WAITLIST_ENDPOINT with the honest unconfigured state, favicon + per-route
+    metadata + one authored OG card, chapter handoffs unlocked site-wide, GraphMiniMap
+    label fix. Capstone crawl: 27 routes, every internal link resolves, one h1 each
+    (the run's h1 added by the integration lead), amber on exactly four known routes.
+    129/129 Playwright. Box waits on the perf ruling with the rest.
 - [ ] Phase 1 exit: full-site walk green, budgets green, north-star behavior observed
+  - Full-site walk: GREEN (crawl spec, 39 tests over 27 routes). Handoff continuation:
+    tested round-trip with URL state. Run completion path: end-to-end walk green.
+    Waitlist: mechanism verified; CAPTURES requires Matt to set the endpoint at ship
+    (LAW: "decided at ship") — that plus the perf-measurement ruling are the two open
+    items between here and Phase 1 exit. a11y ≥95 on every audited route; perf budget
+    pending the ruling (observed paints 232-763ms site-wide; simulated numbers are the
+    known lantern artifact plus real hydration TBT, worst on the run route).
